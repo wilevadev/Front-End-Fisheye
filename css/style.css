@@ -1,10 +1,11 @@
 @import url("photographer.css");
 
-body {
+
+* {
     font-family: "DM Sans", sans-serif;
     margin: 0;
+    box-sizing: border-box; 
 }
-
 
 header {
     display: flex;
@@ -12,6 +13,9 @@ header {
     justify-content: space-between;
     align-items: center;
     height: 90px;
+}
+.logo{
+     cursor: pointer; /* rajout  */
 }
 
 h1 {
@@ -42,9 +46,56 @@ h1 {
 .photographer_section article h2 {
     color: #D3573C;
     font-size: 36px;
+    font-weight: 400;
+    line-height: 47px;
+    letter-spacing: 0em;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 0;
+
 }
 
 .photographer_section article img {
     height: 200px;
     width: 200px;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%; /* Cela rendra le conteneur et l'image ronds */
+    overflow: hidden; /* Pour s'assurer que l'image est correctement coupée pour correspondre à la forme ronde */
+    box-shadow: 0px 4px 12px 0px #00000040;
+    background: #C4C4C4;
+
+}
+
+.location{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #901C1C;
+    
+}
+.tagline{
+   
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 13px;
+    letter-spacing: 0em;
+    text-align: center;
+    margin-top: 2px;
+     
+}
+
+.price{
+   
+    font-family: DM Sans;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 12px;
+    letter-spacing: 0em;
+    text-align: center;
+    margin-top: 3px;
+    color:#757575;
+ 
 }
