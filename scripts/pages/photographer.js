@@ -8,7 +8,13 @@ async function getPhotographer() {
         .then(response => response.json())
         .then(data => {
             // Trouver le photographe avec l'ID correspondant
-            const selectedPhotographer = data.photographers.find(p => p.id == photographerId);
+            let selectedPhotographer;
+            for (let i = 0; i < data.photographers.length; i++) {
+                if (data.photographers[i].id == photographerId) {
+                    selectedPhotographer = data.photographers[i];
+                    break;
+                }
+            }
             // Afficher les données du photographe sélectionné
             console.log(selectedPhotographer);
             // Renvoyer les données
