@@ -1,3 +1,4 @@
+
 function photographerTemplate(data) {
     const { name, portrait } = data;
 
@@ -28,7 +29,7 @@ function photographerTemplate(data) {
         price.classList.add("price");
         price.innerText = ` ${data.price}€/jour`;
         article.appendChild(price);
-
+        //////////// a voir//////////////////////
         return article;
     }
     return { name, picture, getUserCardDOM };
