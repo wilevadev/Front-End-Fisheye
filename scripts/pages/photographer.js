@@ -1,4 +1,4 @@
-async function getPhotographer() {
+async function getPhotographer(callPhotographer) {
     // Récupérer l'ID du photographe à partir des paramètres d'URL
     const urlParams = new URLSearchParams(window.location.search);
     const photographerId = urlParams.get('id');
@@ -15,9 +15,7 @@ async function getPhotographer() {
                     break;
                 }
             }
-            // Afficher les données du photographe sélectionné
-            console.log(selectedPhotographer);
-            // Renvoyer les données
+            // Renvoyer les données du photographe sélectionné
             return selectedPhotographer;
         })
         .catch(error => {
@@ -26,11 +24,16 @@ async function getPhotographer() {
             throw error;
         });
 
-    // Renvoyer les données du photographe récupérées
-    return photographer;
+    // Appeler la fonction pour afficher le photographe récupéré
+    callPhotographer(photographer);
 }
 
-// Appel de la fonction pour récupérer le photographe
-getPhotographer()
+function callPhotographer(photographer){
+    const photographHeader = document.querySelector(".photograph-header"); // Utilisation de la classe CSS
+    const photographerModel = photographerTemplate(photographer);
+    const userCardDOM = photographerModel.getUserCardDOM();
+    photographHeader.appendChild(userCardDOM);
+}
 
-
+// Appel de la fonction pour récupérer le photographe et afficher ses données
+getPhotographer(callPhotographer);
