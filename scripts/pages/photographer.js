@@ -1,39 +1,69 @@
-async function getPhotographer(callPhotographer) {
-    // Récupérer l'ID du photographe à partir des paramètres d'URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const photographerId = urlParams.get('id');
+const urlParams = new URLSearchParams(window.location.search);
+const photographerId = parseInt(urlParams.get('id'), 10); // Assurez-vous que l'ID est un nombre
 
-    // Récupérer les données du photographe avec fetch
-    const photographer = await fetch(`../data/photographers.json`)
-        .then(response => response.json())
-        .then(data => {
-            // Trouver le photographe avec l'ID correspondant
-            let selectedPhotographer;
-            for (let i = 0; i < data.photographers.length; i++) {
-                if (data.photographers[i].id == photographerId) {
-                    selectedPhotographer = data.photographers[i];
-                    break;
-                }
-            }
-            // Renvoyer les données du photographe sélectionné
-            return selectedPhotographer;
-        })
-        .catch(error => {
-            console.error('Une erreur s\'est produite lors de la récupération du photographe :', error);
-            // Renvoyer une erreur
-            throw error;
-        });
-
-    // Appeler la fonction pour afficher le photographe récupéré
-    callPhotographer(photographer);
+// Ajustement de fetchData pour retourner { photographer, medias }
+async function fetchData(photographerId) {
+    try {
+        const response = await fetch(`./data/photographers.json`);
+        const data = await response.json();
+        const photographer = data.photographers.find(p => p.id === photographerId);
+        const medias = data.media.filter(m => m.photographerId === photographerId);
+        return { photographer, medias }; // Retourne un objet contenant le photographe et ses médias
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données:', error);
+    }
 }
 
-function callPhotographer(photographer){
-    const photographHeader = document.querySelector(".photograph-header"); // Utilisation de la classe CSS
-    const photographerModel = photographerTemplate(photographer);
-    const userCardDOM = photographerModel.getUserCardDOM();
-    photographHeader.appendChild(userCardDOM);
+// Ajustement de displayPhotographer pour extraire correctement les informations du photographe
+async function displayPhotographer() {
+    const { photographer } = await fetchData(photographerId); // Destructuration pour obtenir le photographe
+    if (photographer) {
+        const photographHeader = document.querySelector(".photograph-header");
+        const photographerModel = photographerTemplate(photographer); // Assurez-vous que cette fonction existe et fonctionne correctement
+        const userCardDOM = photographerModel.getUserCardDOM(); // Cette méthode doit retourner un élément DOM
+        photographHeader.appendChild(userCardDOM);
+    }
 }
 
-// Appel de la fonction pour récupérer le photographe et afficher ses données
-getPhotographer(callPhotographer);
+async function displayContact() {
+    const { photographer } = await fetchData(photographerId);
+    if (photographer) {
+        const contactModel = contactTemplate(photographer);
+        const contactElement = contactModel.getContactDOM();
+
+        // Au lieu d'append l'élément directement, retourne l'élément pour une utilisation ultérieure
+        return contactElement;
+    }
+  
+}
+
+// Ajustement de displayMedia pour extraire et afficher correctement les médias
+async function displayMedia() {
+    const { medias } = await fetchData(photographerId); // Destructuration pour obtenir les médias
+    const photographerMedias = document.querySelector(".media-container");
+    medias.forEach(mediaData => {
+        const media = PhotographerMedia.createMedia(mediaData); // Utilise la Factory pour créer l'objet média
+        const mediaDOM = media.getMediaDOM(); // Appelle getMediaDOM pour obtenir l'élément DOM
+        photographerMedias.appendChild(mediaDOM);
+    });
+}
+
+
+
+
+// Assurez-vous que l'initialisation appelle correctement displayPhotographer et displayMedia
+async function init() {
+    await displayPhotographer(); // Affiche d'abord les informations du photographe
+    await displayMedia();
+    await displayContact() // Ensuite, affiche les médias du photographe
+}
+
+init();
+
+
+
+
+
+
+
+

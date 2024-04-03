@@ -1,4 +1,4 @@
-@import url("photographer.css");
+/* @import url("photographer.css"); */
 
 
 * {
@@ -35,7 +35,7 @@ h1 {
     margin-top: 100px;
 }
 
-.photographer_section article {
+.photographer_section figure {
     justify-self: center;
     display: flex;
     justify-content: center;
@@ -52,6 +52,7 @@ h1 {
     text-align: center;
     margin-top: 20px;
     margin-bottom: 0;
+    cursor: pointer; /* rajout  */
 
 }
 
@@ -64,6 +65,7 @@ h1 {
     overflow: hidden; /* Pour s'assurer que l'image est correctement coupée pour correspondre à la forme ronde */
     box-shadow: 0px 4px 12px 0px #00000040;
     background: #C4C4C4;
+    cursor: pointer; /* rajout  */
 
 }
 
