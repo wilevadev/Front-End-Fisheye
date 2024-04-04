@@ -4,8 +4,6 @@ function photographerTemplate(data) {
 
     function getUserCardDOM() {
         const article = document.createElement('article');
-    
-        // Utilise <figure> pour l'image et <figcaption> pour les infos
         const figure = document.createElement('figure');
         const img = document.createElement('img');
         img.setAttribute("src", picture);
@@ -33,15 +31,11 @@ function photographerTemplate(data) {
         priceElement.classList.add("price");
         priceElement.textContent = `${price}€/jour`;
         figcaption.appendChild(priceElement);
-    
-        // Ajoute figcaption à figure, puis figure à article
         figure.appendChild(figcaption);
         article.appendChild(figure);
     
         return article;
     }
-    
-
     return { name, picture, getUserCardDOM };
 }
 

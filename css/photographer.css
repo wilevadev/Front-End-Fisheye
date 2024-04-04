@@ -13,6 +13,13 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    height: 90px;
+}
+
+h1 {
+    color: #901C1C;
+    margin-right: 100px;
 }
 
 .logo {
@@ -29,6 +36,7 @@ header {
 }
 
 .contact_button {
+    position: absolute;
     /* Position absolue pour positionner le bouton */
     z-index: 1;
     font-size: 20px;
@@ -235,7 +243,7 @@ header {
 .modal header {
     justify-content: space-between;
     width: 100%;
-    height:140px
+    height:220px
 }
 
 .modal header img {
@@ -277,11 +285,32 @@ form input {
     border: none;
     border-radius: 5px;
 }
- #comments {
+.text-control{
+    padding-left: 20px;
+    font-family: DM Sans;
+font-size: 20px;
+font-weight: 400;
+line-height: 46.87px;
+text-align: left;
+color: #312E2E;
+
+
+}
+
+
+#comments {
+    padding-left: 20px;
     width: 100%;
     height: 170px;
     border: none;
     border-radius: 5px;
+    padding-top: 0;
+    box-sizing: border-box;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 46.87px;
+    text-align: left;
+    color: #312E2E;
 }
 .contact_button-send{
     font-size: 20px;

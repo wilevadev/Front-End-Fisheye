@@ -34,17 +34,13 @@ class PhotographerMedia {
     createLikesElement() {
         const likesContainer = document.createElement('div');
         likesContainer.classList.add('media-likes');
-
         const likesCount = document.createElement('span');
         likesCount.textContent = this._likes;
         likesCount.classList.add('likes-count');
-
         const likeIcon = document.createElement('i');
         likeIcon.classList.add('fa-solid', 'fa-heart');
         likeIcon.setAttribute('aria-hidden', 'true'); 
-        
-
-        likesContainer.appendChild(likesCount);
+                likesContainer.appendChild(likesCount);
         likesContainer.appendChild(likeIcon);
 
         return likesContainer;
@@ -84,38 +80,18 @@ class PhotographerImage extends PhotographerMedia {
     }
 
     getMediaDOM() {
-        // Crée l'élément <article> comme conteneur principal pour une meilleure sémantique
-        const mediaArticle = document.createElement('article');
-    
-        // Crée un élément <a> pour rendre l'image cliquable
-        const linkElement = document.createElement('a');
-        linkElement.setAttribute('href', this.image); // Ou une autre URL pertinente
-        linkElement.setAttribute('aria-label', this._title); // Pour l'accessibilité
-    
-        // Crée l'élément image
-        const imageElement = document.createElement('img');
+       const mediaArticle = document.createElement('article');
+     const imageElement = document.createElement('img');
         imageElement.src = this.image;
         imageElement.alt = this._title;
-    
-        // Ajoute l'image au lien, puis le lien à l'article
-        linkElement.appendChild(imageElement);
-        mediaArticle.appendChild(linkElement);
-    
-        // Crée le conteneur pour le titre et les likes
+        mediaArticle.appendChild(imageElement);
         const infoContainer = document.createElement('div');
         infoContainer.classList.add('media-info');
-    
-        // Supposons que createTitleElement() et createLikesElement() sont méthodes qui fonctionnent
         infoContainer.appendChild(this.createTitleElement());
         infoContainer.appendChild(this.createLikesElement());
-    
-        // Ajoute le conteneur d'infos à l'article
         mediaArticle.appendChild(infoContainer);
-    
-        return mediaArticle; // Retourne l'élément <article> complet
+        return mediaArticle; 
     }
-    
-    
 }
 
 class PhotographerVideo extends PhotographerMedia {
@@ -129,35 +105,22 @@ class PhotographerVideo extends PhotographerMedia {
     }
 
     getMediaDOM() {
-        // Crée l'élément <article> comme conteneur principal pour une meilleure sémantique
+       
         const mediaArticle = document.createElement('article');
-    
-        // Crée un élément <a> pour rendre la vidéo cliquable (si nécessaire)
         const linkElement = document.createElement('a');
-        linkElement.setAttribute('href', this.video); // Assure-toi que this.video pointe vers l'URL correcte
-        linkElement.setAttribute('aria-label', this._title); // Pour l'accessibilité
-    
-        // Crée l'élément vidéo
+        linkElement.setAttribute('href', this.video); // 
+        linkElement.setAttribute('aria-label', this._title);
         const videoElement = document.createElement('video');
         videoElement.src = this.video;
         videoElement.controls = true; 
         videoElement.setAttribute('title', this._title);
-    
-      
         linkElement.appendChild(videoElement);
         mediaArticle.appendChild(linkElement);
-    
-        
         const infoContainer = document.createElement('div');
         infoContainer.classList.add('media-info');
-    
-       
         infoContainer.appendChild(this.createTitleElement());
         infoContainer.appendChild(this.createLikesElement());
-    
-       
         mediaArticle.appendChild(infoContainer);
-    
         return mediaArticle; 
     }
 }
