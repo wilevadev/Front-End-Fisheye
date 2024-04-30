@@ -1,137 +1,146 @@
 class PhotographerMedia {
-    constructor(data) {
-        this._id = data.id;
-        this._photographerId = data.photographerId;
-        this._title = data.title;
-        this._likes = data.likes;
-        this._date = data.date;
-        this._price = data.price;
-        this._name = data.name;
-    }
+  static totalLikes = 0
+  constructor (data) {
+    this._id = data.id
+    this._photographerId = data.photographerId
+    this._title = data.title
+    this._likes = data.likes
+    this._date = data.date
+    this._price = data.price
+    this._name = data.name
+    this.isLiked = false
+    PhotographerMedia.totalLikes += this._likes
+  }
 
-    get id() {
-        return this._id;
-    }
+  createTitleElement () {
+    const titleElement = document.createElement('h3')
+    titleElement.textContent = this._title
+    titleElement.classList.add('media-title')
+    return titleElement
+  }
 
-    get photographerId() {
-        return this._photographerId;
-    }
+  createLikesElement () {
+    const likesContainer = document.createElement('div')
+    const likesCount = document.createElement('span')
+    const likeIcon = document.createElement('img')
 
-    get title() {
-        return this._title;
-    }
+    likesContainer.classList.add('media-likes')
+    likesCount.textContent = this._likes
+    likesCount.classList.add('likes-count')
+    likeIcon.setAttribute('src', 'assets/icons/heart.svg')
+    likeIcon.setAttribute('alt', 'like')
+    likeIcon.setAttribute('role', 'button');
+    likeIcon.setAttribute('aria-label', 'toggle like');
+    likeIcon.setAttribute('tabindex', 0);
+    likeIcon.classList.add('like-icon-svg')
+    likesContainer.appendChild(likesCount)
+    likesContainer.appendChild(likeIcon)
 
-    createTitleElement() {
-        const titleElement = document.createElement('h3');
-        titleElement.textContent = this._title;
-        titleElement.classList.add('media-title');
-        return titleElement;
-    }
+    likeIcon.addEventListener('click', () => {
+      const likeChange = this.isLiked ? -1 : 1
+      this.isLiked = !this.isLiked
+      this._likes += likeChange
+      PhotographerMedia.totalLikes += likeChange
+      likesCount.textContent = this._likes
 
-    get likes() {
-        return this._likes;
-    }
-    createLikesElement() {
-        const likesContainer = document.createElement('div');
-        likesContainer.classList.add('media-likes');
-        const likesCount = document.createElement('span');
-        likesCount.textContent = this._likes;
-        likesCount.classList.add('likes-count');
-        const likeIcon = document.createElement('i');
-        likeIcon.classList.add('fa-solid', 'fa-heart');
-        likeIcon.setAttribute('aria-hidden', 'true'); 
-                likesContainer.appendChild(likesCount);
-        likesContainer.appendChild(likeIcon);
+      const totalLikesElement = document.querySelector('.total-likes-span')
+      if (totalLikesElement) {
+        totalLikesElement.textContent = PhotographerMedia.totalLikes
+      } else {
+        console.error("L'élément pour afficher le total des likes n'existe pas.")
+      }
+    })
 
-        return likesContainer;
-    }
+    return likesContainer
+  }
 
-    get date() {
-        return this._date;
-    }
+  getMediaDOM () {
+    throw new Error('This method is supposed to be implemented by subclasses')
+  }
 
-    get price() {
-        return this._price;
+  static createMedia (data) {
+    if (data.image) {
+      return new PhotographerImage(data)
+    } else if (data.video) {
+      return new PhotographerVideo(data)
+    } else {
+      throw new Error('Media type unknown')
     }
-
-    getMediaDOM() {
-        throw new Error('This method is supposed to be implemented by subclasses');
-    }
-
-    static createMedia(data) {
-        if (data.image) {
-            return new PhotographerImage(data);
-        } else if (data.video) {
-            return new PhotographerVideo(data);
-        } else {
-            throw new Error("Media type unknown");
-        }
-    }
+  }
 }
 
+const allMediaPaths = []
+
 class PhotographerImage extends PhotographerMedia {
-    constructor(data) {
-        super(data);
-        this._image = data.image;
-    }
+  constructor(data) {
+      super(data);
+      this._image = data.image;
+  }
 
-    get image() {
-        return `assets/photographers/${this._photographerId}/${this._image}`;
-    }
+  get image() {
+      return `assets/photographers/${this._photographerId}/${this._image}`;
+  }
 
-    getMediaDOM() {
-       const mediaArticle = document.createElement('article');
-     const imageElement = document.createElement('img');
-        imageElement.src = this.image;
-        imageElement.alt = this._title;
-        mediaArticle.appendChild(imageElement);
-        const infoContainer = document.createElement('div');
-        infoContainer.classList.add('media-info');
-        infoContainer.appendChild(this.createTitleElement());
-        infoContainer.appendChild(this.createLikesElement());
-        mediaArticle.appendChild(infoContainer);
-        return mediaArticle; 
-    }
+  getMediaDOM() {
+      const mediaArticle = document.createElement('article');
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', this.image);
+      linkElement.setAttribute('aria-label', this._title);
+      
+      const imageElement = document.createElement('img');
+      imageElement.src = this.image;
+      imageElement.alt = this._title;
+      
+      linkElement.appendChild(imageElement);
+      mediaArticle.appendChild(linkElement);
+      
+      const infoContainer = document.createElement('div');
+      infoContainer.classList.add('media-info');
+      infoContainer.appendChild(this.createTitleElement());
+      infoContainer.appendChild(this.createLikesElement());
+      
+      mediaArticle.appendChild(infoContainer);
+      linkElement.classList.add('lightbox-open');
+      
+      return mediaArticle;
+  }
 }
 
 class PhotographerVideo extends PhotographerMedia {
-    constructor(data) {
-        super(data);
-        this._video = data.video;
-    }
+  constructor(data) {
+      super(data);
+      this._video = data.video;
+  }
 
-    get video() {
-        return `assets/photographers/${this._photographerId}/${this._video}`;
-    }
+  get video() {
+      return `assets/photographers/${this._photographerId}/${this._video}`;
+  }
 
-    getMediaDOM() {
-       
-        const mediaArticle = document.createElement('article');
-        const linkElement = document.createElement('a');
-        linkElement.setAttribute('href', this.video); // 
-        linkElement.setAttribute('aria-label', this._title);
-        const videoElement = document.createElement('video');
-        videoElement.src = this.video;
-        videoElement.controls = true; 
-        videoElement.setAttribute('title', this._title);
-        linkElement.appendChild(videoElement);
-        mediaArticle.appendChild(linkElement);
-        const infoContainer = document.createElement('div');
-        infoContainer.classList.add('media-info');
-        infoContainer.appendChild(this.createTitleElement());
-        infoContainer.appendChild(this.createLikesElement());
-        mediaArticle.appendChild(infoContainer);
-        return mediaArticle; 
-    }
+  getMediaDOM() {
+      const mediaArticle = document.createElement('article');
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', this.video);
+      linkElement.setAttribute('aria-label', this._title);
+      
+      const videoElement = document.createElement('video');
+      videoElement.src = this.video;
+      videoElement.setAttribute('controls', true);
+      videoElement.title = this._title;
+      
+      linkElement.appendChild(videoElement);
+      mediaArticle.appendChild(linkElement);
+      
+      const infoContainer = document.createElement('div');
+      infoContainer.classList.add('media-info');
+      infoContainer.appendChild(this.createTitleElement());
+      infoContainer.appendChild(this.createLikesElement());
+      
+      mediaArticle.appendChild(infoContainer);
+      linkElement.classList.add('lightbox-open');
+      
+      return mediaArticle;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
+document.addEventListener('DOMContentLoaded', () => {
+  Lightbox.init();
+});

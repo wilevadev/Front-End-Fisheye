@@ -35,13 +35,7 @@ h1 {
     margin-top: 100px;
 }
 
-.photographer_section figure {
-    justify-self: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
+
 
 .photographer_section article h2 {
     color: #D3573C;
@@ -55,19 +49,32 @@ h1 {
     cursor: pointer; /* rajout  */
 
 }
+.photographer_section figure {
+    justify-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 
 .photographer_section article img {
     height: 200px;
     width: 200px;
     object-fit: cover;
     display: block;
-    border-radius: 50%; /* Cela rendra le conteneur et l'image ronds */
-    overflow: hidden; /* Pour s'assurer que l'image est correctement coupée pour correspondre à la forme ronde */
+    border-radius: 50%;
+    overflow: hidden;
     box-shadow: 0px 4px 12px 0px #00000040;
     background: #C4C4C4;
-    cursor: pointer; /* rajout  */
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Transition pour une animation fluide */
 
 }
+
+.photographer_section article img:hover {
+    transform: scale(1.1); /* Effet de grossissement */
+}
+
 
 .location{
     font-size: 16px;
