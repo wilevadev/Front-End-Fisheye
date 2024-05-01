@@ -18,41 +18,43 @@ class PhotographerMedia {
     titleElement.classList.add('media-title')
     return titleElement
   }
+  createLikesElement() {
+    const likesContainer = document.createElement('div');
+    const likesCount = document.createElement('span');
+    const likeIcon = document.createElement('img');
 
-  createLikesElement () {
-    const likesContainer = document.createElement('div')
-    const likesCount = document.createElement('span')
-    const likeIcon = document.createElement('img')
-
-    likesContainer.classList.add('media-likes')
-    likesCount.textContent = this._likes
-    likesCount.classList.add('likes-count')
-    likeIcon.setAttribute('src', 'assets/icons/heart.svg')
-    likeIcon.setAttribute('alt', 'like')
+    likesContainer.classList.add('media-likes');
+    likesCount.textContent = this._likes;
+    likesCount.classList.add('likes-count');
+    likeIcon.setAttribute('src', this.isLiked ? 'assets/icons/heart.svg' : 'assets/icons/heartWhite.svg');
+    likeIcon.setAttribute('alt', 'like');
     likeIcon.setAttribute('role', 'button');
     likeIcon.setAttribute('aria-label', 'toggle like');
     likeIcon.setAttribute('tabindex', 0);
-    likeIcon.classList.add('like-icon-svg')
-    likesContainer.appendChild(likesCount)
-    likesContainer.appendChild(likeIcon)
+    likeIcon.classList.add('like-icon-svg');
+    likesContainer.appendChild(likesCount);
+    likesContainer.appendChild(likeIcon);
 
     likeIcon.addEventListener('click', () => {
-      const likeChange = this.isLiked ? -1 : 1
-      this.isLiked = !this.isLiked
-      this._likes += likeChange
-      PhotographerMedia.totalLikes += likeChange
-      likesCount.textContent = this._likes
+        const likeChange = this.isLiked ? -1 : 1;
+        this.isLiked = !this.isLiked;
+        this._likes += likeChange;
+        PhotographerMedia.totalLikes += likeChange;
+        likesCount.textContent = this._likes;
+        likeIcon.src = this.isLiked ? 'assets/icons/heart.svg' : 'assets/icons/heartWhite.svg';
 
-      const totalLikesElement = document.querySelector('.total-likes-span')
-      if (totalLikesElement) {
-        totalLikesElement.textContent = PhotographerMedia.totalLikes
-      } else {
-        console.error("L'élément pour afficher le total des likes n'existe pas.")
-      }
-    })
+        const totalLikesElement = document.querySelector('.total-likes-span');
+        if (totalLikesElement) {
+            totalLikesElement.textContent = PhotographerMedia.totalLikes;
+        } else {
+            console.error("L'élément pour afficher le total des likes n'existe pas.");
+        }
+    });
 
-    return likesContainer
-  }
+    return likesContainer;
+}
+
+
 
   getMediaDOM () {
     throw new Error('This method is supposed to be implemented by subclasses')

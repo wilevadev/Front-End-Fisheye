@@ -2,8 +2,9 @@ class Lightbox {
   // Initialiser la lightbox en attachant des écouteurs d'événements aux liens appropriés.
   static init () {
     const links = Array.from(document.querySelectorAll('a[href$=".png"], a[href$=".jpg"], a[href$=".jpeg"], a[href$=".JPEG"], a[href$=".JPG"], a[href$=".PNG"], a[href$=".mp4"], a[href$=".MP4"]'));
+   
     const gallery = links.map(link => link.getAttribute('href'));
-
+   
     links.forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
@@ -15,6 +16,7 @@ class Lightbox {
   constructor (url, gallery) {
     this.url = url;
     this.gallery = gallery;
+    
     this.element = this.buildDOM();
     this.loadItem(url);
     this.onKeyUp = this.onKeyUp.bind(this);
@@ -54,18 +56,54 @@ class Lightbox {
     }
   }
 
+    
+   
   createMediaElement (url) {
     let element;
+    const caption = document.createElement('div');
+    caption.className = 'lightbox-caption';
+
+    // Récupérer l'élément link ou media avec aria-label
+    const mediaLink = document.querySelector(`a[href="${url}"], [src="${url}"]`);
+    const accessibleLabel = mediaLink ? mediaLink.getAttribute('aria-label') : '';
+
     if (url.match(/\.(jpeg|jpg|png)$/i)) {
-      element = new Image();
-      element.src = url;
+        element = new Image();
+        element.src = url;
+        if (accessibleLabel) {
+            caption.textContent = accessibleLabel; // Utiliser aria-label comme légende pour les images.
+        }
     } else if (url.match(/\.mp4$/i)) {
-      element = document.createElement('video');
-      element.src = url;
-      element.setAttribute('controls', 'controls');
+        element = document.createElement('video');
+        element.src = url;
+        element.setAttribute('controls', 'controls');
+        if (accessibleLabel) {
+            caption.textContent = accessibleLabel; // Utiliser aria-label comme légende pour les vidéos.
+        }
     }
-    return element;
-  }
+
+    const container = document.createElement('div');
+    container.appendChild(element);
+    container.appendChild(caption); // Ajouter la légende sous l'élélement média.
+    return container;
+}
+
+
+    
+
+
+  // createMediaElement (url) {
+  //   let element;
+  //   if (url.match(/\.(jpeg|jpg|png)$/i)) {
+  //     element = new Image();
+  //     element.src = url;
+  //   } else if (url.match(/\.mp4$/i)) {
+  //     element = document.createElement('video');
+  //     element.src = url;
+  //     element.setAttribute('controls', 'controls');
+  //   }
+  //   return element;
+  // }
 
   onKeyUp (e) {
     switch (e.key) {

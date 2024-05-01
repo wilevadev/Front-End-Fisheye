@@ -51,19 +51,25 @@ function createToggle(medias, updateLikesDisplay) {
         }
         updateMediaDisplay(sortedMedias, updateLikesDisplay);
     }
-    
     function updateMediaDisplay(sortedMedias, updateLikesDisplay) {
         const mediaContainer = document.querySelector(".media-container");
         mediaContainer.innerHTML = '';  // Assurez-vous que les anciens enfants sont retirés.
         sortedMedias.forEach(mediaData => {
             const media = PhotographerMedia.createMedia(mediaData);
             const mediaDOM = media.getMediaDOM();
+            // Vérifier si le média était aimé et mettre à jour l'affichage en conséquence
+            if (media.isLiked) {
+                const likeElement = mediaDOM.querySelector('.like-icon-svg');
+                likeElement.classList.add('liked'); // Assurez-vous que vous avez le CSS pour .liked
+            }
             mediaContainer.appendChild(mediaDOM);
         });
     
         // Assurez-vous que les likes sont recalculés après la mise à jour de l'affichage
         updateLikesDisplay();
     }
+    
+
     
     function updateLikesDisplay() {
         const allMedia = document.querySelectorAll('.media-likes .likes-count');
