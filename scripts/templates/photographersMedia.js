@@ -18,6 +18,7 @@ class PhotographerMedia {
     titleElement.classList.add('media-title')
     return titleElement
   }
+
   createLikesElement() {
     const likesContainer = document.createElement('div');
     const likesCount = document.createElement('span');
@@ -26,6 +27,8 @@ class PhotographerMedia {
     likesContainer.classList.add('media-likes');
     likesCount.textContent = this._likes;
     likesCount.classList.add('likes-count');
+    
+    // Initialisation de l'icône selon l'état isLiked
     likeIcon.setAttribute('src', this.isLiked ? 'assets/icons/heart.svg' : 'assets/icons/heartWhite.svg');
     likeIcon.setAttribute('alt', 'like');
     likeIcon.setAttribute('role', 'button');
@@ -41,7 +44,9 @@ class PhotographerMedia {
         this._likes += likeChange;
         PhotographerMedia.totalLikes += likeChange;
         likesCount.textContent = this._likes;
-        likeIcon.src = this.isLiked ? 'assets/icons/heart.svg' : 'assets/icons/heartWhite.svg';
+        
+        // Mettre à jour l'icône selon l'état après clic
+        likeIcon.setAttribute('src', this.isLiked ? 'assets/icons/heart.svg' : 'assets/icons/heartWhite.svg');
 
         const totalLikesElement = document.querySelector('.total-likes-span');
         if (totalLikesElement) {
@@ -53,8 +58,6 @@ class PhotographerMedia {
 
     return likesContainer;
 }
-
-
 
   getMediaDOM () {
     throw new Error('This method is supposed to be implemented by subclasses')
@@ -85,6 +88,7 @@ class PhotographerImage extends PhotographerMedia {
 
   getMediaDOM() {
       const mediaArticle = document.createElement('article');
+      mediaArticle.dataset.mediaId = this._id;
       const linkElement = document.createElement('a');
       linkElement.setAttribute('href', this.image);
       linkElement.setAttribute('aria-label', this._title);
@@ -120,6 +124,7 @@ class PhotographerVideo extends PhotographerMedia {
 
   getMediaDOM() {
       const mediaArticle = document.createElement('article');
+      mediaArticle.dataset.mediaId = this._id;
       const linkElement = document.createElement('a');
       linkElement.setAttribute('href', this.video);
       linkElement.setAttribute('aria-label', this._title);

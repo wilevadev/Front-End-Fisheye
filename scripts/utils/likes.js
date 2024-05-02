@@ -20,7 +20,7 @@ function createLikes(photographer, medias) {
 
     const heartIcon = document.createElement('img');
     heartIcon.src = 'assets/icons/heartBlack.svg';
-    heartIcon.alt = 'likes';
+    heartIcon.alt = 'like';
     heartIcon.classList.add('like-icon-svg');
     totalLikeInfo.appendChild(heartIcon);
 

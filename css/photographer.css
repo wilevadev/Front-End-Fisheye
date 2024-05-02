@@ -140,10 +140,12 @@ h1 {
     align-items: center;
    gap: 20px;
    transition: transform 0.3s ease; /* Transition pour une animation fluide */
+   margin-bottom: 80px;
+ 
 }
 
 .media-container article {
-    box-shadow: 0px 4px 12px 0px #00000040;
+   
     width: 31%;
     height: 408px;
     max-width: 350px;
@@ -163,7 +165,7 @@ h1 {
     overflow: hidden;
     object-fit: cover;
     display: block;
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0;
     
 
 }
@@ -175,7 +177,7 @@ h1 {
     overflow: hidden;
     object-fit: cover;
     display: block;
-   
+    border-radius: 5px 5px 0 0;
 
   
 }
@@ -289,6 +291,7 @@ form input {
     border: none;
     border-radius: 5px;
 }
+
 .text-control{
     padding-left: 20px;
     font-family: DM Sans;
@@ -445,6 +448,7 @@ color: #312E2E;
    height: 65px;
    bottom: 0;
    right: 0;
+   margin-right: 40px;
 
 }
 @media screen and (max-width: 991px){

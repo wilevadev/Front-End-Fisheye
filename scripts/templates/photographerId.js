@@ -4,18 +4,20 @@ function photographerTemplate(data) {
 
   function getUserCardDOM() {
     const article = document.createElement('article');
-    
+    // Le rôle 'article' est déjà bien attribué à la balise <article>, pas besoin de redéfinir
+
     const figure = document.createElement('figure');
+    
     const img = document.createElement('img');
     img.setAttribute('src', picture);
-    img.setAttribute('alt', `${name} - Portrait de ${name}`); // Description de l'image
+    img.setAttribute('alt', `${name} - Portrait de ${name}`);
     figure.appendChild(img);
 
     const figcaption = document.createElement('figcaption');
     figcaption.classList.add('info');
 
     const h2 = document.createElement('h2');
-    h2.textContent = name.replace(/-/g, '\u002D');
+    h2.textContent = name;
     figcaption.appendChild(h2);
 
     const location = document.createElement('p');
@@ -33,7 +35,7 @@ function photographerTemplate(data) {
     priceElement.textContent = `${price}€/jour`;
     figcaption.appendChild(priceElement);
     
-    figure.appendChild(figcaption); // Ajout de la légende à la figure
+    figure.appendChild(figcaption);
     article.appendChild(figure);
 
     return article;
