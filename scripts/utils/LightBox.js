@@ -60,6 +60,8 @@ class Lightbox {
    
   createMediaElement (url) {
     let element;
+    const configImg = document.createElement('div')
+    configImg.className = 'image-container'
     const caption = document.createElement('div');
     caption.className = 'lightbox-caption';
 
@@ -83,8 +85,9 @@ class Lightbox {
     }
 
     const container = document.createElement('div');
-    container.appendChild(element);
-    container.appendChild(caption); // Ajouter la légende sous l'élélement média.
+    configImg.appendChild(element);
+    configImg.appendChild(caption);
+    container.appendChild(configImg) // Ajouter la légende sous l'élélement média.
     return container;
 }
 

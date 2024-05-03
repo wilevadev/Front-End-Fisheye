@@ -2,6 +2,7 @@
     display: none;
 }
 * {
+    font-family: DM Sans;
     margin:0;
     padding:0;
     box-sizing:border-box;
@@ -331,8 +332,6 @@ color: #312E2E;
     border-radius: 5px;
     cursor: pointer;   
 }
-
-
 .lightbox {
     display: flex;
     align-items: center;
@@ -349,23 +348,33 @@ color: #312E2E;
 
 .lightbox-container {
     position: relative;
-    width: 72.22%; /* Largeur relative à la largeur de la vue */
-    height: 900px; /* Hauteur fixe */
-    padding: 95px; /* Espace autour de l'image/vidéo */
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    width: 80%; /* Prend toute la largeur pour le centrage */
+    height: 100%; /* Prend toute la hauteur pour le centrage */
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center; /* Centre l'élément média dans le conteneur */
+    justify-content: center;
+    background-color: #fff;
+}
+
+.image-container {
+    width: 80vw; /* Utilise 80% de la largeur de l'écran */
+    max-width: 1040px; /* Largeur maximale fixée à 1040px */
+    height: 72.31vw; /* Hauteur basée sur un ratio de largeur pour garder 900/1040 */
+    max-height: 900px; /* Hauteur maximale fixée à 900px */
+    overflow: hidden; /* Cache les débordements */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+   
 }
 
 .lightbox img,
 .lightbox video {
-    width: 100%;
-    height: 850px;
-    object-fit: contain;
-    border-radius: 5px;
+    width: 100%; /* Prend la totalité de la largeur du conteneur */
+    height: 95%; /* Prend la totalité de la hauteur du conteneur */
+    object-fit: cover; /* Couvre entièrement la zone sans déformation */
+    object-position: center center; /* Centre l'image */
 }
 
 .lightbox.fadeOut {
@@ -375,7 +384,7 @@ color: #312E2E;
 .lightbox-next,
 .lightbox-prev {
     border: none;
-    background: url('../assets/icons/arrow.svg') center center / 60px 60px  no-repeat;
+    background: url('../assets/icons/arrow.svg') center center /  60px 96px no-repeat;
     width: 96px;
     height: 96px;
     position: absolute;
@@ -386,11 +395,11 @@ color: #312E2E;
 }
 
 .lightbox-next {
-    right: 15%; /* Espacement du bord droit */
+    right: 10%; /* Espacement du bord droit */
 }
 
 .lightbox-prev {
-    left: 15%; /* Espacement du bord gauche */
+    left: 10%; /* Espacement du bord gauche */
     transform: rotate(180deg) ;
 }
 
@@ -398,10 +407,10 @@ color: #312E2E;
     width: 72px;
     height: 72px;
     border: none;
-    background: url('../assets/icons/close.svg') center center / 42px 42px no-repeat;
+    background: url('../assets/icons/close.svg') center center / 60px 60px no-repeat;
     position: absolute;
     top: 50px;
-    right: 15.5%; /* Consistance avec les boutons next/prev */
+    right: 10.5%; /* Consistance avec les boutons next/prev */
     cursor: pointer;
     text-indent: -3000px;
     z-index: 12;
