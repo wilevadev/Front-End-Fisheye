@@ -10,9 +10,9 @@
 </head>
 <body>
   <header>
-       <!-- rajout ancrage a voir -->
+      
        <a href="index.html" aria-label="home">
-        <img src="assets/images/logo.png" class="logo" alt="fisheye logo"/>
+        <h1><img src="assets/images/logo.png" class="logo" alt="fisheye logo"/></h1>
     </a>
   </header>
   <main id="main">
@@ -24,7 +24,10 @@
     <div class="modal">
       <header>
         <h2 class="name">Contactez-moi</h2>
-        <img src="assets/icons/close.svg"aria-label="fermer" onclick="closeModal()" />
+        <a href="javascript:void(0)" id="closeModalButton" class="close-button" aria-label="Fermer" role="button" onclick="closeModal()" tabindex="0">
+          <img src="assets/icons/close.svg" alt="Fermer">
+      </a> 
+     
       </header>
       <form id="contactForm" action="/submit" method="POST" novalidate>
         <div class="formData">
