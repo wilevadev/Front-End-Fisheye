@@ -2,6 +2,7 @@
     display: none;
 }
 * {
+    text-decoration: none;
     font-family: DM Sans;
     margin:0;
     padding:0;
@@ -199,13 +200,16 @@ h1 {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: wrap;
-
+    
+    
+    
 }
 
 .media-info {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    
     
 }
 
@@ -215,7 +219,7 @@ h1 {
     color: #901C1C;
     padding-right: 15px;
     padding-top: 2px;
-   
+    
 }
 
 .like-icon-svg {

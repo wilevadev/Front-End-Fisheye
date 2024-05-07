@@ -1,5 +1,6 @@
+// Classe Lightbox pour créer et gérer une lightbox pour l'affichage de médias.
 class Lightbox {
-  // Initialiser la lightbox en attachant des écouteurs d'événements aux liens appropriés.
+  // Méthode statique pour initialiser la lightbox en attachant des écouteurs d'événements sur les liens appropriés.
   static init () {
     const links = Array.from(document.querySelectorAll('a[href$=".png"], a[href$=".jpg"], a[href$=".jpeg"], a[href$=".JPEG"], a[href$=".JPG"], a[href$=".PNG"], a[href$=".mp4"], a[href$=".MP4"]'))
 
@@ -12,7 +13,7 @@ class Lightbox {
       })
     })
   }
-
+ // Constructeur de la classe pour initialiser les propriétés et afficher la lightbox.
   constructor (url, gallery) {
     this.url = url
     this.gallery = gallery
@@ -45,7 +46,7 @@ class Lightbox {
       }
     })
   }
-
+// Méthode pour charger un nouvel élément média dans la lightbox.
   loadItem (url) {
     const container = this.element.querySelector('.lightbox-container')
     container.innerHTML = ''
@@ -55,7 +56,7 @@ class Lightbox {
       mediaElement.play()
     }
   }
-
+  // Crée un élément média basé sur l'URL et ajoute une légende si disponible.
   createMediaElement (url) {
     let element
     const configImg = document.createElement('div')
@@ -88,7 +89,7 @@ class Lightbox {
     container.appendChild(configImg) // Ajouter la légende sous l'élélement média.
     return container
   }
-
+  // Gestion des touches du clavier pour naviguer ou fermer la lightbox.
   onKeyUp (e) {
     switch (e.key) {
       case 'Escape':
@@ -102,7 +103,7 @@ class Lightbox {
         break
     }
   }
-
+ // Ferme la lightbox et retire les écouteurs d'événements.
   close () {
     this.element.classList.add('fadeOut')
     setTimeout(() => {
@@ -111,21 +112,21 @@ class Lightbox {
     }, 500)
     document.removeEventListener('keyup', this.onKeyUp)
   }
-
+// Charge l'élément média suivant de la galerie.
   next () {
     let i = this.gallery.findIndex(galleryItem => galleryItem === this.url)
     i = (i + 1) % this.gallery.length
     this.url = this.gallery[i]
     this.loadItem(this.url)
   }
-
+  // Charge l'élément média précédent de la galerie.
   prev () {
     let i = this.gallery.findIndex(galleryItem => galleryItem === this.url)
     i = (i - 1 + this.gallery.length) % this.gallery.length
     this.url = this.gallery[i]
     this.loadItem(this.url)
   }
-
+ // Construit le DOM pour la lightbox, y compris les boutons et conteneurs nécessaires.
   buildDOM () {
     const dom = document.createElement('div')
     dom.classList.add('lightbox')
@@ -141,17 +142,18 @@ class Lightbox {
     dom.querySelector('.lightbox-prev').addEventListener('click', () => this.prev())
     return dom
   }
-
+ // Met le focus sur le premier élément interactif de la lightbox.
   focusFirstElement () {
     this.element.querySelector('.lightbox-close').focus()
   }
-
+// Renvoie le focus à l'élément d'origine après la fermeture de la lightbox.
   returnFocus () {
     if (this.initialFocus && typeof this.initialFocus.focus === 'function') {
       this.initialFocus.focus()
     }
   }
 }
+// Initialise la lightbox une fois que le contenu du document est complètement chargé.
 
 document.addEventListener('DOMContentLoaded', () => {
   Lightbox.init()

@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <title>Fisheye</title>
-  </head>
-  <body>
-    <header>
-      <!-- rajout ancrage a voir -->
-      <a href="index.html" aria-label="home">
-        <img src="assets/images/logo.png" class="logo" alt="fisheye logo"/>
-    </a>
-        <h1>Nos photographes</h1>
-    </header>
-    <main id="main">
-        <div class="photographer_section"></div>
-    </main>
-    <script src="https://kit.fontawesome.com/6ad2fc119a.js" crossorigin="anonymous"></script>
-    <script src="./scripts/pages/index.js"></script>
-    <script src="./scripts/templates/photographerId.js"></script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
+  <title>Fisheye</title>
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <header>
+    <!-- Utilisation de la balise nav pour une meilleure sémantique de la navigation -->
+    <nav>
+      <a href="index.html" aria-label="Retour à la page d'accueil de Fisheye">
+        <img src="assets/images/logo.png" class="logo" alt="Logo de Fisheye "/>
+      </a>
+    </nav>
+    <h1>Nos photographes</h1>
+  </header>
+  <main id="main">
+     <section class="photographer_section" >
+     </section>
+  </main>
+  <script src="https://kit.fontawesome.com/6ad2fc119a.js" crossorigin="anonymous"></script>
+  <script src="./scripts/pages/index.js" async></script>
+  <script src="./scripts/templates/photographerId.js" async></script>
+</body>
 </html>

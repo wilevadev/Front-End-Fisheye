@@ -1,107 +1,103 @@
-// Extraction de l'identifiant du photographe depuis les paramètres de l'URL.
+// Extraire les paramètres de l'URL pour obtenir l'ID du photographe à partir de la requête.
 const urlParams = new URLSearchParams(window.location.search);
 const photographerId = parseInt(urlParams.get('id'), 10);
 
-// Fonction asynchrone pour récupérer les données d'un photographe et ses médias correspondants.
+// Fonction asynchrone pour récupérer les données du photographe et de ses médias.
 async function fetchData(photographerId) {
   try {
-    // Requête pour obtenir les données depuis le fichier JSON local.
+    // Récupération des données JSON depuis le serveur.
     const response = await fetch('./data/photographers.json');
     const data = await response.json();
-    // Trouve le photographe correspondant à l'ID fourni.
+    // Recherche du photographe par ID.
     const photographer = data.photographers.find(p => p.id === photographerId);
-    // Filtre les médias qui sont associés à l'ID du photographe.
+    // Filtrage des médias qui appartiennent au photographe trouvé.
     const medias = data.media.filter(m => m.photographerId === photographerId);
     return { photographer, medias };
   } catch (error) {
-    // Gestion des erreurs en cas de problème lors de la récupération des données.
+    // Gestion des erreurs en cas de problème de récupération des données.
     console.error('Erreur lors de la récupération des données:', error);
   }
 }
-
-// Fonction pour afficher les informations d'un photographe dans l'entête.
-async function displayPhotographer() {
-  const { photographer } = await fetchData(photographerId);
+// Affichage des informations du photographe sur la page.
+async function displayPhotographer () {
+  const { photographer } = await fetchData(photographerId)
   if (photographer) {
-    const photographHeader = document.querySelector('.photograph-header');
-    const photographerModel = photographerTemplate(photographer);
-    const userCardDOM = photographerModel.getUserCardDOM();
-    photographHeader.appendChild(userCardDOM);
+    const photographHeader = document.querySelector('.photograph-header')
+    const photographerModel = photographerTemplate(photographer)
+    const userCardDOM = photographerModel.getUserCardDOM()
+    photographHeader.appendChild(userCardDOM)
   }
 }
-
-// Fonction pour afficher les coordonnées de contact d'un photographe.
-async function displayContact() {
-  const { photographer } = await fetchData(photographerId);
+// Affichage des informations de contact du photographe.
+async function displayContact () {
+  const { photographer } = await fetchData(photographerId)
   if (photographer) {
-    const contactModel = contactTemplate(photographer);
-    const contactElement = contactModel.getContactDOM();
-    return contactElement;
+    const contactModel = contactTemplate(photographer)
+    const contactElement = contactModel.getContactDOM()
+    return contactElement
   }
 }
-
-// Fonction pour afficher les médias d'un photographe.
-async function displayMedia() {
-  const { medias } = await fetchData(photographerId);
-  const photographerMedias = document.querySelector('.media-container');
+// Affichage des médias du photographe (photos et vidéos).
+async function displayMedia () {
+  const { medias } = await fetchData(photographerId) // Ajout de 'photographer' ici
+  const photographerMedias = document.querySelector('.media-container')
   medias.forEach(mediaData => {
-    const media = PhotographerMedia.createMedia(mediaData);
-    const mediaDOM = media.getMediaDOM();
-    photographerMedias.appendChild(mediaDOM);
-  });
-  initializeLightboxListeners();
+    const media = PhotographerMedia.createMedia(mediaData)
+    const mediaDOM = media.getMediaDOM()
+    photographerMedias.appendChild(mediaDOM)
+
+    allMediaPaths.push(media.image || media.video)
+  })
+
+  initializeLightboxListeners()
 }
 
-// Fonction pour initialiser les écouteurs d'événements pour une lightbox.
-function initializeLightboxListeners() {
+// Initialisation des écouteurs pour la lightbox, permettant d'afficher les médias en grand format.
+function initializeLightboxListeners () {
   document.querySelectorAll('.lightbox-open').forEach(link => {
     link.addEventListener('click', e => {
-      e.preventDefault();
-      const mediaPath = link.getAttribute('href');
-      new Lightbox(mediaPath);
-    });
-  });
+      e.preventDefault()
+      const mediaPath = link.getAttribute('href')
+      new Lightbox(mediaPath, allMediaPaths)
+    })
+  })
 }
-
-// Fonction pour afficher le nombre total de "likes" pour un photographe.
-async function displayLikes() {
-  const { photographer, medias } = await fetchData(photographerId);
+// Affichage du nombre total de "likes" pour les médias du photographe.
+async function displayLikes () {
+  const { photographer, medias } = await fetchData(photographerId)
   if (photographer && medias) {
-    const totalLikesContainer = document.querySelector('.total-likes-global');
+    const totalLikesContainer = document.querySelector('.total-likes-global')
     if (totalLikesContainer) {
-      const likeModel = createLikes(photographer, medias);
-      totalLikesContainer.appendChild(likeModel.totalLikesDOM);
+      const likeModel = createLikes(photographer, medias)
+      totalLikesContainer.appendChild(likeModel.totalLikesDOM)
     } else {
-      console.error("Erreur : Le conteneur '.total-likes-container' n'a pas été trouvé dans le DOM.");
+      console.error("Erreur : Le conteneur '.total-likes-container' n'a pas été trouvé dans le DOM.")
     }
   } else {
-    console.error('Erreur : Les données du photographe ou des médias sont manquantes.');
+    console.error('Erreur : Les données du photographe ou des médias sont manquantes.')
   }
 }
-
-// Fonction pour afficher les options de triage des médias.
-async function displayToggle() {
-  const { medias } = await fetchData(photographerId);
+// Affichage de l'interrupteur pour filtrer les médias selon certains critères.
+async function displayToggle () {
+  const { medias } = await fetchData(photographerId)
   if (medias) {
-    const toggleDiv = document.querySelector('.toggle');
-    const toggleModel = createToggle(medias);
-    toggleDiv.appendChild(toggleModel.getToggleDOM());
+    const toggleDiv = document.querySelector('.toggle')
+    const toggleModel = createToggle(medias)
+    toggleDiv.appendChild(toggleModel.getToggleDOM())
   }
 }
-
-// Fonction initiale pour démarrer l'application.
-async function init() {
+// Fonction initiale qui orchestre les appels des fonctions d'affichage lors du chargement de la page.
+async function init () {
   try {
-    await displayPhotographer();
-    await displayMedia();
-    await displayContact();
-    await displayLikes();
-    await displayToggle();
+   
+    await displayPhotographer(photographerId) 
+    await displayMedia(photographerId)
+    await displayContact(photographerId)
+    await displayLikes(photographerId)
+    await displayToggle(photographerId)
   } catch (error) {
-    console.error('Error initializing the page:', error);
+    console.error('Error initializing the page:', error)
   }
 }
-
-// Appel de la fonction init pour démarrer l'application.
-init();
-
+// Lancement de la fonction init lors du chargement du script.
+init()

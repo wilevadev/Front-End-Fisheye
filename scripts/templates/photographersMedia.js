@@ -41,7 +41,7 @@ class PhotographerMedia {
     likeIcon.setAttribute('src', this.isLiked ? 'assets/icons/heart.svg' : 'assets/icons/heartWhite.svg');
     likeIcon.setAttribute('alt', 'like');
     likeIcon.setAttribute('role', 'button');
-    likeIcon.setAttribute('aria-label', 'toggle like');
+    likeIcon.setAttribute('aria-label', 'like');
     likeIcon.setAttribute('tabindex', 0);
     likeIcon.classList.add('like-icon-svg');
     likesContainer.appendChild(likesCount);

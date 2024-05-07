@@ -8,9 +8,12 @@ function createLikes (photographer, medias) {
   // Créer le DOM pour afficher le total des likes
   const totalLikesContainer = document.createElement('div')
   totalLikesContainer.classList.add('total-likes-container')
+  totalLikesContainer.setAttribute('role', 'complementary');
+  totalLikesContainer.setAttribute('aria-label', 'Résumé des likes et tarif');
 
   const totalLikeInfo = document.createElement('div')
   totalLikeInfo.classList.add('like-info')
+  totalLikeInfo.setAttribute('role', 'contentinfo');
   totalLikesContainer.appendChild(totalLikeInfo)
 
   const totalLikesSpan = document.createElement('span')
