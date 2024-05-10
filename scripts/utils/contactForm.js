@@ -1,21 +1,26 @@
-// Fonction pour afficher la modale de contact.
 function displayModal() {
-  // Récupère l'élément modale par son identifiant.
   const modal = document.getElementById('contact_modal');
-  // Change le style de l'élément pour le rendre visible.
   modal.style.display = 'block';
-  
+  modal.setAttribute('aria-modal', 'true');
 
+  setTimeout(() => {
+    const firstInput = modal.querySelector('input, textarea, button');
+    if (firstInput) {
+      firstInput.focus();
+    }
+  }, 100); // Attendez 100 ms avant de déplacer le focus
 }
 
 // Fonction pour fermer la modale de contact.
 function closeModal() {
-  // Récupère l'élément modale par son identifiant.
   const modal = document.getElementById('contact_modal');
-  // Change le style de l'élément pour le cacher.
   modal.style.display = 'none';
-  // Remet le focus sur le bouton qui a initialement ouvert la modale. Il semble y avoir une erreur ici : 'close-button' devrait être une classe ou un id.
-  document.querySelector('.close-button').focus();
+
+  // Remet le focus sur le bouton qui a ouvert la modale.
+  const openModalButton = document.querySelector('.contact_button');
+  if (openModalButton) {
+    openModalButton.focus();
+  }
 }
 
 // Fonction qui retourne un objet DOM pour le formulaire de contact, utilisant les données fournies.
@@ -31,7 +36,7 @@ function contactTemplate(data) {
 
   // Valide l'email avec une expression régulière.
   function validateEmail(email) {
-    const emailRegExp = /^[A-z0-9._-]+[@]{1}[A-z0-9._-]+[.]{1}[A-Z]{2,10}$/;
+    const emailRegExp = /^[A-z0-9._-]+[@]{1}[a-zA-Z0-9._-]+[.]{1}[a-zA-Z]{2,10}$/
     return emailRegExp.test(email);
   }
 

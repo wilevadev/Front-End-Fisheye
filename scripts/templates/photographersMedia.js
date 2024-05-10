@@ -141,46 +141,51 @@ class PhotographerVideo extends PhotographerMedia {
 
   // Méthode pour obtenir le DOM de la vidéo, incluant le lien et les informations.
   getMediaDOM() {
-    const mediaArticle = document.createElement('article');
-    mediaArticle.dataset.mediaId = this._id;
+// Création de l'article média
+const mediaArticle = document.createElement('article');
+mediaArticle.dataset.mediaId = this._id;
 
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', this.video)
-    const videoElement = document.createElement('video');
-    videoElement.src = this.video;
-    videoElement.setAttribute('controls', true);
-    videoElement.setAttribute('aria-label', 'vue rapprochée de l\'image');
+// Création de l'élément de lien qui contiendra la vidéo
+const linkElement = document.createElement('a');
+linkElement.setAttribute('href', this.video);
+linkElement.setAttribute('aria-label', `Vue rapprochée de la vidéo : ${this._title}`);
+linkElement.classList.add('lightbox-open');
 
-    // Optionnel : Ajout d'un titre pour une description non-aria supplémentaire.
-    videoElement.setAttribute('title', 'Video showing detailed view');
+// Création de l'élément vidéo avec contrôles et aria-label
+const videoElement = document.createElement('video');
+videoElement.src = this.video;
+videoElement.setAttribute('controls', true);
+videoElement.setAttribute('aria-label', `Vue rapprochée de la vidéo : ${this._title}`);
 
-    // Ajout d'une piste de sous-titres pour l'accessibilité.
-    const trackElement = document.createElement('track');
-    trackElement.setAttribute('kind', 'captions');
-    trackElement.setAttribute('src', ''); // Chemin vers votre fichier de sous-titres.
-    trackElement.setAttribute('srclang', 'fr');
-    trackElement.setAttribute('label', 'francais');
-    videoElement.appendChild(trackElement);
+// Ajout d'un élément de piste vide mais indiquant un travail en cours
+const trackElement = document.createElement('track');
+trackElement.setAttribute('kind', 'captions');
+trackElement.setAttribute('src', ''); 
+trackElement.setAttribute('srclang', 'fr');
+trackElement.setAttribute('label', 'Français - Sous-titres en préparation');
+videoElement.appendChild(trackElement);
 
-    // Ajout d'une piste de description pour l'accessibilité.
-    const descriptionTrack = document.createElement('track');
-    descriptionTrack.setAttribute('kind', 'descriptions');
-    descriptionTrack.setAttribute('src', '');  
-    descriptionTrack.setAttribute('srclang', 'fr');
-    descriptionTrack.setAttribute('label', 'Description');
-    videoElement.appendChild(descriptionTrack);
-    linkElement.appendChild(videoElement);
-    mediaArticle.appendChild(linkElement);
+// Ajout de la vidéo à l'élément de lien
+linkElement.appendChild(videoElement);
 
-    const infoContainer = document.createElement('div');
-    infoContainer.classList.add('media-info');
-    infoContainer.appendChild(this.createTitleElement());
-    infoContainer.appendChild(this.createLikesElement());
+// Ajout de l'élément de lien à l'article
+mediaArticle.appendChild(linkElement);
 
-    mediaArticle.appendChild(infoContainer);
-    linkElement.classList.add('lightbox-open');
 
-    return mediaArticle;
+
+// Création et ajout du conteneur d'informations pour les médias
+const infoContainer = document.createElement('div');
+infoContainer.classList.add('media-info');
+infoContainer.appendChild(this.createTitleElement());
+infoContainer.appendChild(this.createLikesElement());
+
+// Ajout du conteneur d'informations à l'article
+mediaArticle.appendChild(infoContainer);
+
+// Retourne l'élément article complet
+return mediaArticle;
+
+
   }
 }
 

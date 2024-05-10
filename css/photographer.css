@@ -8,6 +8,12 @@
     padding:0;
     box-sizing:border-box;
   }
+
+  .focusable:focus {
+    outline: 2px solid blue;  
+    background-color: lightgray;  
+}
+
 header {
     display: flex;
     flex-direction: row;
@@ -237,7 +243,7 @@ h1 {
   
     display: none;
     position: absolute;
-    z-index: 1;
+    z-index: 111;
     left: 30%;
     top: 40px;
     border-radius: 5px;

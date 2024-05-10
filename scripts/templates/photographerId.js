@@ -22,7 +22,6 @@ function photographerTemplate(data) {
     // Création de l'élément 'figcaption' pour les informations du photographe.
     const figcaption = document.createElement('figcaption');
     figcaption.classList.add('info');
-    
 
     // Création et configuration de l'élément 'h2' pour le nom du photographe.
     const h2 = document.createElement('h2');
@@ -34,12 +33,15 @@ function photographerTemplate(data) {
     const location = document.createElement('h3');
     location.classList.add('location');
     location.textContent = `${city}, ${country}`;
+    location.setAttribute('tabindex', '0')
     figcaption.appendChild(location);
 
     // Création de l'élément 'p' pour la tagline du photographe.
     const taglineElement = document.createElement('p');
     taglineElement.classList.add('tagline');
     taglineElement.textContent = tagline;
+    taglineElement.setAttribute('tabindex', '0')    
+   
     figcaption.appendChild(taglineElement);
 
     // Création de l'élément 'p' pour afficher le tarif journalier.
