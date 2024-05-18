@@ -5,6 +5,7 @@
     font-family: "DM Sans", sans-serif;
     margin: 0;
     box-sizing: border-box; 
+    text-decoration: none;  
 }
 
 header {
@@ -37,7 +38,7 @@ h1 {
 
 
 
-.photographer_section article h2 {
+.photographer_section article h2 a {
     color: #D3573C;
     font-size: 36px;
     font-weight: 400;

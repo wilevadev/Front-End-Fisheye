@@ -26,6 +26,11 @@ h1 {
     color: #901C1C;
     margin-right: 100px;
 }
+button {
+    border: none;
+    background-color: #fff;
+  }
+
 
 .logo {
     height: 50px;
@@ -69,15 +74,16 @@ h1 {
 
 }
 
-.photograph-header h2 {
+.photograph-header h2{
     padding-left: 50px;
     font-size: 64px;
     font-weight: 400;
     line-height: 60px;
     text-align: left;
     color: #D3573C;
-
-
+    pointer-events: none;
+    cursor: not-allowed;
+   
 
 }
 
@@ -110,6 +116,8 @@ h1 {
     overflow: hidden;
     object-fit: cover;
     display: block;
+    pointer-events: none;
+    cursor: not-allowed;
 }
 
 
@@ -163,9 +171,8 @@ h1 {
     
  
 }
-.media-container article:hover{
-    transform: scale(1.05); /* Effet de grossissement */   
-}
+
+
 .media-container img {
    
     width: 100%;
@@ -415,6 +422,7 @@ color: #312E2E;
     cursor: pointer;
     text-indent: -3000px;
     z-index: 11;
+    color:transparent;
 }
 
 .lightbox-next {
@@ -437,6 +445,7 @@ color: #312E2E;
     cursor: pointer;
     text-indent: -3000px;
     z-index: 12;
+    color:transparent;
 }
 .lightbox-caption{
     font-size: 24px;
@@ -459,6 +468,7 @@ color: #312E2E;
     line-height: 31.25px;
     text-align: right;
     padding-right: 5px;
+   background-color: transparent;
        
 }
 
@@ -468,6 +478,7 @@ color: #312E2E;
     font-weight: 500;
     line-height: 31.25px;
     text-align: right;
+    background-color: transparent;
        
 }
 .total-likes-container{
@@ -534,7 +545,7 @@ color: #312E2E;
     background: #901C1C;
     color:white;
     text-transform:capitalize;
-    padding:10px 20px;
+    padding:20px 20px;
     border-radius: 5px;
     display:flex;
     justify-content:space-between;
@@ -555,7 +566,7 @@ color: #312E2E;
   }
   .dropDown>.options>* {
     position:relative;
-    padding:10px 20px;
+    padding:20px 20px;
     text-transform:capitalize;
     display:flex;
     justify-content:space-between;

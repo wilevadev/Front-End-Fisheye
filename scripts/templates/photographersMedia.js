@@ -1,11 +1,7 @@
-// Définition de la classe principale pour les médias des photographes.
 class PhotographerMedia {
-  // Variable statique pour suivre le total des likes de tous les médias.
   static totalLikes = 0;
 
-  // Constructeur de la classe pour initialiser les propriétés de chaque instance.
   constructor(data) {
-    // Initialisation des propriétés à partir des données fournies.
     this._id = data.id;
     this._photographerId = data.photographerId;
     this._title = data.title;
@@ -14,12 +10,11 @@ class PhotographerMedia {
     this._price = data.price;
     this._name = data.name;
     this._image = data.image;
-    this.isLiked = false;  // État initial du "like".
-    // Ajout des likes de l'instance au total général des likes.
+    this._video = data.video;
+    this.isLiked = false;
     PhotographerMedia.totalLikes += this._likes;
   }
 
-  // Méthode pour créer un élément de titre DOM.
   createTitleElement() {
     const titleElement = document.createElement('h3');
     titleElement.textContent = this._title;
@@ -27,9 +22,8 @@ class PhotographerMedia {
     return titleElement;
   }
 
-  // Méthode pour créer un élément DOM pour les likes, avec interaction.
   createLikesElement() {
-    const likesContainer = document.createElement('div');
+    const likesContainer = document.createElement('button');
     const likesCount = document.createElement('span');
     const likeIcon = document.createElement('img');
 
@@ -37,28 +31,30 @@ class PhotographerMedia {
     likesCount.textContent = this._likes;
     likesCount.classList.add('likes-count');
 
-    // Initialisation de l'icône de like selon l'état isLiked.
     likeIcon.setAttribute('src', this.isLiked ? 'assets/icons/heart.svg' : 'assets/icons/heartWhite.svg');
-    likeIcon.setAttribute('alt', 'like');
-    likeIcon.setAttribute('role', 'button');
-    likeIcon.setAttribute('aria-label', 'like');
+    likeIcon.setAttribute('alt', 'un coeur pour aimer la photo');
+    likeIcon.setAttribute('role', 'img');
+    likeIcon.setAttribute('aria-label', `cliquez sur le coeur si vous aimez ${this._title}`);
     likeIcon.setAttribute('tabindex', 0);
     likeIcon.classList.add('like-icon-svg');
+
+    likesContainer.setAttribute('role', 'button');
+    likesContainer.setAttribute('aria-label', this.isLiked ? 'Unlike' : `l'oeuvre de a reçu ${this._likes} likes`);
+    likesContainer.setAttribute('tabindex', 0);
+
     likesContainer.appendChild(likesCount);
     likesContainer.appendChild(likeIcon);
 
-    // Gestion de l'événement click pour basculer l'état du like.
-    likeIcon.addEventListener('click', () => {
+    likesContainer.addEventListener('click', () => {
       const likeChange = this.isLiked ? -1 : 1;
       this.isLiked = !this.isLiked;
       this._likes += likeChange;
       PhotographerMedia.totalLikes += likeChange;
       likesCount.textContent = this._likes;
 
-      // Mise à jour de l'icône de like après un clic.
       likeIcon.setAttribute('src', this.isLiked ? 'assets/icons/heart.svg' : 'assets/icons/heartWhite.svg');
+      likesContainer.setAttribute('aria-label', this.isLiked ? `vous aimez l'œuvre ${this._title}` : `vous n'aimez pas l'œuvre ${this._title}`);
 
-      // Mise à jour du total des likes affiché dans le DOM, si l'élément existe.
       const totalLikesElement = document.querySelector('.total-likes-span');
       if (totalLikesElement) {
         totalLikesElement.textContent = PhotographerMedia.totalLikes;
@@ -70,12 +66,10 @@ class PhotographerMedia {
     return likesContainer;
   }
 
-  // Méthode abstraite pour obtenir le DOM du média. Doit être implémentée par les sous-classes.
   getMediaDOM() {
     throw new Error('This method is supposed to be implemented by subclasses');
   }
 
-  // Méthode statique pour créer une instance appropriée de média basée sur les données fournies.
   static createMedia(data) {
     if (data.image) {
       return new PhotographerImage(data);
@@ -86,31 +80,22 @@ class PhotographerMedia {
     }
   }
 }
-const allMediaPaths = []
 
-// Définition de la sous-classe pour les images.
 class PhotographerImage extends PhotographerMedia {
-  constructor(data) {
-    super(data);
-    this._image = data.image; // Redondance, car déjà initialisé par la classe parente.
-  }
-
-  // Getter pour obtenir le chemin complet de l'image.
   get image() {
     return `assets/photographers/${this._photographerId}/${this._image}`;
   }
 
-  // Méthode pour obtenir le DOM de l'image, incluant le lien et les informations.
   getMediaDOM() {
     const mediaArticle = document.createElement('article');
     mediaArticle.dataset.mediaId = this._id;
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', this.image);
-    linkElement.setAttribute('aria-label', `View detail of ${this._title}`);
+    linkElement.setAttribute('aria-label', this._title);
 
     const imageElement = document.createElement('img');
     imageElement.src = this.image;
-    imageElement.alt = `An image showing ${this._title}`;
+    imageElement.alt = `l'image montre ${this._title}`;
 
     linkElement.appendChild(imageElement);
     mediaArticle.appendChild(linkElement);
@@ -127,70 +112,48 @@ class PhotographerImage extends PhotographerMedia {
   }
 }
 
-// Définition de la sous-classe pour les vidéos.
 class PhotographerVideo extends PhotographerMedia {
-  constructor(data) {
-    super(data);
-    this._video = data.video; // Redondance, car déjà initialisé par la classe parente.
-  }
-
-  // Getter pour obtenir le chemin complet de la vidéo.
   get video() {
     return `assets/photographers/${this._photographerId}/${this._video}`;
   }
 
-  // Méthode pour obtenir le DOM de la vidéo, incluant le lien et les informations.
   getMediaDOM() {
-// Création de l'article média
-const mediaArticle = document.createElement('article');
-mediaArticle.dataset.mediaId = this._id;
+    const mediaArticle = document.createElement('article');
+    mediaArticle.dataset.mediaId = this._id;
 
-// Création de l'élément de lien qui contiendra la vidéo
-const linkElement = document.createElement('a');
-linkElement.setAttribute('href', this.video);
-linkElement.setAttribute('aria-label', `Vue rapprochée de la vidéo : ${this._title}`);
-linkElement.classList.add('lightbox-open');
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', this.video);
+    linkElement.setAttribute('aria-label', this._title);
+    linkElement.classList.add('lightbox-open');
 
-// Création de l'élément vidéo avec contrôles et aria-label
-const videoElement = document.createElement('video');
-videoElement.src = this.video;
-videoElement.setAttribute('controls', true);
-videoElement.setAttribute('aria-label', `Vue rapprochée de la vidéo : ${this._title}`);
+    const videoElement = document.createElement('video');
+    videoElement.src = this.video;
+    videoElement.setAttribute('controls', true);
+    videoElement.setAttribute('aria-label', `la vidéo montre : ${this._title}`);
 
-// Ajout d'un élément de piste vide mais indiquant un travail en cours
-const trackElement = document.createElement('track');
-trackElement.setAttribute('kind', 'captions');
-trackElement.setAttribute('src', ''); 
-trackElement.setAttribute('srclang', 'fr');
-trackElement.setAttribute('label', 'Français - Sous-titres en préparation');
-videoElement.appendChild(trackElement);
+    const trackElement = document.createElement('track');
+    trackElement.setAttribute('kind', 'captions');
+    trackElement.setAttribute('src', '');
+    trackElement.setAttribute('srclang', 'fr');
+    trackElement.setAttribute('label', 'Français - Sous-titres en préparation');
+    videoElement.appendChild(trackElement);
 
-// Ajout de la vidéo à l'élément de lien
-linkElement.appendChild(videoElement);
+    linkElement.appendChild(videoElement);
+    mediaArticle.appendChild(linkElement);
 
-// Ajout de l'élément de lien à l'article
-mediaArticle.appendChild(linkElement);
+    const infoContainer = document.createElement('div');
+    infoContainer.classList.add('media-info');
+    infoContainer.appendChild(this.createTitleElement());
+    infoContainer.appendChild(this.createLikesElement());
 
+    mediaArticle.appendChild(infoContainer);
 
-
-// Création et ajout du conteneur d'informations pour les médias
-const infoContainer = document.createElement('div');
-infoContainer.classList.add('media-info');
-infoContainer.appendChild(this.createTitleElement());
-infoContainer.appendChild(this.createLikesElement());
-
-// Ajout du conteneur d'informations à l'article
-mediaArticle.appendChild(infoContainer);
-
-// Retourne l'élément article complet
-return mediaArticle;
-
-
+    return mediaArticle;
   }
 }
 
-// Initialisation de la lightbox à la fin du chargement de la page.
 document.addEventListener('DOMContentLoaded', () => {
-  Lightbox.init()
-})
+  Lightbox.init();
+});
+
 
