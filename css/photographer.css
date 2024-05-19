@@ -461,7 +461,9 @@ color: #312E2E;
     justify-content: space-around;
     align-items: center;
 }
-.total-likes-span{
+.total-likes-button{
+    display: flex;
+    align-items: center;
     font-family: DM Sans;
     font-size: 24px;
     font-weight: 500;
@@ -471,7 +473,9 @@ color: #312E2E;
    background-color: transparent;
        
 }
-
+.like-icon-svg{
+padding-left: 5px;
+}
 .likes-price{
     font-family: DM Sans;
     font-size: 24px;

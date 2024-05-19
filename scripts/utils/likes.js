@@ -1,37 +1,54 @@
+// Fonction pour créer les éléments de likes pour un photographe
 function createLikes (photographer, medias) {
-  const filteredMedias = medias.filter(media => media.photographerId === photographer.id);
-  const totalLikes = filteredMedias.reduce((acc, media) => acc + media.likes, 0);
+  // Filtrer les médias pour ne garder que ceux du photographe
+  const filteredMedias = medias.filter(media => media.photographerId === photographer.id)
+  // Calculer le total des likes en utilisant reduce
+  const totalLikes = filteredMedias.reduce((acc, media) => acc + media.likes, 0)
 
-  const totalLikesContainer = document.createElement('div');
-  totalLikesContainer.classList.add('total-likes-container');
-  totalLikesContainer.setAttribute('role', 'complementary');
-  totalLikesContainer.setAttribute('aria-label', 'le nombre total des like du photographe et son tarif par jour');
+  // Créer un conteneur pour afficher le total des likes
+  const totalLikesContainer = document.createElement('div')
+  totalLikesContainer.classList.add('total-likes-container')
+  totalLikesContainer.setAttribute('role', 'complementary')
+  totalLikesContainer.setAttribute('aria-label', 'le nombre total des like du photographe et son tarif par jour')
 
-  const totalLikeInfo = document.createElement('div');
-  totalLikeInfo.classList.add('like-info');
-  totalLikeInfo.setAttribute('role', 'contentinfo');
-  totalLikesContainer.appendChild(totalLikeInfo);
+  // Créer un conteneur pour les informations sur les likes
+  const totalLikeInfo = document.createElement('div')
+  totalLikeInfo.classList.add('like-info')
+  totalLikeInfo.setAttribute('role', 'contentinfo')
+  totalLikesContainer.appendChild(totalLikeInfo)
 
-  const totalLikesSpan = document.createElement('button');
-  totalLikesSpan.classList.add('total-likes-span');
-  totalLikesSpan.textContent = totalLikes;
-  totalLikeInfo.appendChild(totalLikesSpan);
+  // Créer un bouton pour afficher le total des likes
+  const totalLikesButton = document.createElement('button')
+  totalLikesButton.classList.add('total-likes-button')
+  totalLikesButton.setAttribute('aria-label', 'Total des likes')
 
-  const heartIcon = document.createElement('img');
-  heartIcon.src = 'assets/icons/heartBlack.svg';
-  heartIcon.alt = 'le total des like';
-  heartIcon.classList.add('like-icon-svg');
-  totalLikeInfo.appendChild(heartIcon);
+  // Créer un élément span pour afficher le total des likes
+  const totalLikesText = document.createElement('span')
+  totalLikesText.classList.add('total-likes-text')
+  totalLikesText.textContent = totalLikes
+  totalLikesButton.appendChild(totalLikesText)
 
-  const priceSpan = document.createElement('button');
-  priceSpan.classList.add('likes-price');
-  priceSpan.textContent = `${photographer.price}€/jour`;
-  totalLikesContainer.appendChild(priceSpan);
+  // Ajouter l'icône du cœur
+  const likeIcon = document.createElement('img')
+  likeIcon.src = 'assets/icons/heartBlack.svg'
+  likeIcon.alt = 'le total des like'
+  likeIcon.classList.add('like-icon-svg')
+  totalLikesButton.appendChild(likeIcon)
 
+  totalLikeInfo.appendChild(totalLikesButton)
+
+  // Créer un bouton pour afficher le prix par jour du photographe
+  const priceButton = document.createElement('button')
+  priceButton.classList.add('likes-price')
+  priceButton.setAttribute('aria-label', `Tarif par jour de ${photographer.name}`)
+  priceButton.textContent = `${photographer.price}€/jour`
+  totalLikesContainer.appendChild(priceButton)
+
+  // Retourner un objet contenant le total des likes et l'élément DOM du total des likes
   return {
     totalLikes,
     totalLikesDOM: totalLikesContainer
-  };
+  }
 }
 
 // Explication des termes traduits :
@@ -57,4 +74,3 @@ function createLikes (photographer, medias) {
 // Return total likes : Retourner le total des likes
 // Return DOM of likes container : Retourner le DOM du conteneur des likes
 // Cette traduction et explication détaillée devraient vous aider à mieux comprendre chaque partie de votre code JavaScript pour la fonction createLikes.
-

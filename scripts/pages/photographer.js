@@ -1,21 +1,21 @@
 // Extraire les paramètres de l'URL pour obtenir l'ID du photographe
-const urlParams = new URLSearchParams(window.location.search);
-const photographerId = parseInt(urlParams.get('id'), 10);
+const urlParams = new URLSearchParams(window.location.search)
+const photographerId = parseInt(urlParams.get('id'), 10)
 
 // Fonction asynchrone pour récupérer les données du photographe et de ses médias.
-async function fetchData(photographerId) {
+async function fetchData (photographerId) {
   try {
     // Récupération des données JSON depuis le serveur.
-    const response = await fetch('./data/photographers.json');
-    const data = await response.json();
+    const response = await fetch('./data/photographers.json')
+    const data = await response.json()
     // Recherche du photographe par ID.
-    const photographer = data.photographers.find(p => p.id === photographerId);
+    const photographer = data.photographers.find(p => p.id === photographerId)
     // Filtrage des médias qui appartiennent au photographe trouvé.
-    const medias = data.media.filter(m => m.photographerId === photographerId);
-    return { photographer, medias };
+    const medias = data.media.filter(m => m.photographerId === photographerId)
+    return { photographer, medias }
   } catch (error) {
     // Gestion des erreurs en cas de problème de récupération des données.
-    console.error('Erreur lors de la récupération des données:', error);
+    console.error('Erreur lors de la récupération des données:', error)
   }
 }
 // Affichage des informations du photographe sur la page.
@@ -48,10 +48,8 @@ async function displayMedia () {
 
     allMediaPaths.push(media.image || media.video)
   })
-   initializeLightboxListeners()
+  initializeLightboxListeners()
 }
-
-
 
 // Affichage du nombre total de "likes" pour les médias du photographe.
 async function displayLikes () {
@@ -80,8 +78,7 @@ async function displayToggle () {
 // Fonction initiale qui orchestre les appels des fonctions d'affichage lors du chargement de la page.
 async function init () {
   try {
-   
-    await displayPhotographer(photographerId) 
+    await displayPhotographer(photographerId)
     await displayMedia(photographerId)
     await displayContact(photographerId)
     await displayLikes(photographerId)

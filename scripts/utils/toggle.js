@@ -1,113 +1,115 @@
-function createToggle(medias) {
-  const container = document.createElement('div');
-  container.className = 'container';
+// Fonction pour créer un menu déroulant pour trier les médias
+function createToggle (medias) {
+  // Création du conteneur principal
+  const container = document.createElement('div')
+  container.className = 'container'
 
-  const infoDiv = document.createElement('div');
-  infoDiv.className = 'info';
-  infoDiv.textContent = 'Trier par';
-  container.appendChild(infoDiv);
+  // Création de l'élément d'information
+  const infoDiv = document.createElement('div')
+  infoDiv.className = 'info'
+  infoDiv.textContent = 'Trier par'
+  container.appendChild(infoDiv)
 
-  const details = document.createElement('details');
-  details.className = 'dropDown';
-  container.appendChild(details);
+  // Création de l'élément details pour le menu déroulant
+  const details = document.createElement('details')
+  details.className = 'dropDown'
+  container.appendChild(details)
 
-  const summary = document.createElement('summary');
-  summary.setAttribute('role', 'button');
-  summary.setAttribute('aria-expanded', 'false');
-  summary.setAttribute('tabindex', '0');
-  const span = document.createElement('span');
-  span.className = 'value';
-  span.textContent = 'Popularité';
-  summary.appendChild(span);
-  details.appendChild(summary);
+  // Création de l'élément summary pour le bouton du menu déroulant
+  const summary = document.createElement('summary')
+  summary.setAttribute('role', 'button')
+  summary.setAttribute('aria-expanded', 'false')
+  summary.setAttribute('tabindex', '0')
+  summary.setAttribute('aria-haspopup', 'listbox')
 
-  const icon = document.createElement('i');
-  icon.className = 'fa-solid fa-chevron-down';
-  summary.appendChild(icon);
+  // Création de l'élément span pour afficher la valeur sélectionnée
+  const span = document.createElement('span')
+  span.className = 'value'
+  span.textContent = 'Popularité'
+  summary.appendChild(span)
+  details.appendChild(summary)
 
-  const optionsDiv = document.createElement('div');
-  optionsDiv.className = 'options';
-  ['Popularité', 'Date', 'Titre'].forEach(option => {
-    const div = document.createElement('div');
-    div.textContent = option;
-    div.setAttribute('role', 'menuitem');
-    div.setAttribute('tabindex', '0');
+  // Création de l'icône de chevron
+  const icon = document.createElement('i')
+  icon.className = 'fa-solid fa-chevron-down'
+  summary.appendChild(icon)
+
+  // Création du conteneur des options
+  const optionsDiv = document.createElement('div')
+  optionsDiv.className = 'options'
+  optionsDiv.setAttribute('role', 'listbox')
+  optionsDiv.setAttribute('aria-activedescendant', 'option-popularite')
+
+  // Ajout des options de tri
+  const options = ['Popularité', 'Date', 'Titre']
+  options.forEach((option) => {
+    const div = document.createElement('div')
+    div.textContent = option
+    div.setAttribute('role', 'option')
+    div.setAttribute('tabindex', '0')
+    div.setAttribute('id', `option-${option.toLowerCase()}`)
+    if (option === 'Popularité') {
+      div.setAttribute('aria-selected', 'true')
+    }
     div.addEventListener('click', () => {
-      span.textContent = option;
-      details.open = false;
-      summary.setAttribute('aria-expanded', 'false');
-      sortMedias(option, medias);
-    });
+      // Mettre à jour le texte du span avec l'option sélectionnée
+      span.textContent = option
+      options.forEach(opt => {
+        const elem = document.getElementById(`option-${opt.toLowerCase()}`)
+        elem.setAttribute('aria-selected', opt === option ? 'true' : 'false')
+      })
+      details.open = false
+      summary.setAttribute('aria-expanded', 'false')
+      sortMedias(option, medias)
+    })
     div.addEventListener('keypress', (e) => {
+      // Gérer la sélection avec les touches 'Enter' et 'Espace'
       if (e.key === 'Enter' || e.key === ' ') {
-        div.click();
+        div.click()
       }
-    });
-    optionsDiv.appendChild(div);
-  });
-  details.appendChild(optionsDiv);
+    })
+    optionsDiv.appendChild(div)
+  })
+  details.appendChild(optionsDiv)
 
+  // Ajout d'un écouteur d'événements pour gérer l'expansion du menu
   summary.addEventListener('click', () => {
-    const expanded = summary.getAttribute('aria-expanded') === 'true';
-    summary.setAttribute('aria-expanded', String(!expanded));
-  });
+    const expanded = summary.getAttribute('aria-expanded') === 'true'
+    summary.setAttribute('aria-expanded', String(!expanded))
+  })
 
-  function sortMedias(criteria, medias) {
-    const sortedMedias = [...medias];
+  // Fonction pour trier les médias selon le critère sélectionné
+  function sortMedias (criteria, medias) {
+    const sortedMedias = [...medias]
     switch (criteria) {
       case 'Popularité':
-        sortedMedias.sort((a, b) => b.likes - a.likes);
-        break;
+        sortedMedias.sort((a, b) => b.likes - a.likes)
+        break
       case 'Date':
-        sortedMedias.sort((a, b) => new Date(b.date) - new Date(a.date));
-        break;
+        sortedMedias.sort((a, b) => new Date(b.date) - new Date(a.date))
+        break
       case 'Titre':
-        sortedMedias.sort((a, b) => a.title.localeCompare(b.title));
-        break;
+        sortedMedias.sort((a, b) => a.title.localeCompare(b.title))
+        break
     }
-    updateMediaDisplay(sortedMedias);
+    updateMediaDisplay(sortedMedias)
   }
 
-  function updateMediaDisplay(sortedMedias) {
-    const mediaContainer = document.querySelector('.media-container');
-    const existingMediaDOMs = Array.from(mediaContainer.children);
+  // Fonction pour mettre à jour l'affichage des médias
+  function updateMediaDisplay (sortedMedias) {
+    const mediaContainer = document.querySelector('.media-container')
+    const existingMediaDOMs = Array.from(mediaContainer.children)
     const sortedMediaDOMs = sortedMedias.map(mediaData => {
-      const existingDOM = existingMediaDOMs.find(dom => dom.dataset.mediaId == mediaData.id);
-      return existingDOM || PhotographerMedia.createMedia(mediaData).getMediaDOM();
-    });
+      // Trouver l'élément DOM existant ou créer un nouveau
+      const existingDOM = existingMediaDOMs.find(dom => dom.dataset.mediaId == mediaData.id)
+      return existingDOM || PhotographerMedia.createMedia(mediaData).getMediaDOM()
+    })
 
-    mediaContainer.innerHTML = '';
-    sortedMediaDOMs.forEach(dom => mediaContainer.appendChild(dom));
+    // Vider le conteneur et ajouter les éléments triés
+    mediaContainer.innerHTML = ''
+    sortedMediaDOMs.forEach(dom => mediaContainer.appendChild(dom))
   }
 
-  return { getToggleDOM: () => container };
+  // Retourner le conteneur principal
+  return { getToggleDOM: () => container }
 }
-
-
-// Explication des termes traduits :
-// Function to create a toggle : Fonction pour créer un interrupteur (toggle)
-// Allows sorting of medias : Permet le tri des médias
-// Create a div container : Créer un div conteneur
-// Dropdown menu : Menu déroulant
-// Create and configure a div : Créer et configurer un div
-// Display the dropdown label : Afficher l'étiquette du menu déroulant
-// Append to container : Ajouter au conteneur
-// Create a 'details' element : Créer un élément 'details'
-// Summary element as button : Élément 'summary' comme bouton
-// Set ARIA role for accessibility : Définir le rôle ARIA pour l'accessibilité
-// Ensure button can be focused : Assurer que le bouton peut être focalisé
-// Add an icon for visual indicator : Ajouter une icône pour l'indicateur visuel
-// Create a div for menu options : Créer un div pour les options du menu
-// Make each option focusable : Rendre chaque option focusable
-// Set the text of 'summary' with chosen option : Met à jour le texte du 'summary' avec l'option choisie
-// Close the dropdown menu : Fermer le menu déroulant
-// Attach event listener for 'summary' click : Attacher un écouteur d'événement pour le clic sur le 'summary'
-// Sort medias based on selected criteria : Trier les médias selon le critère sélectionné
-// Copy original array to avoid mutation : Copier le tableau original pour éviter la mutation
-// Update display with sorted medias : Mise à jour de l'affichage avec les médias triés
-// Clear current content of container : Effacer le contenu actuel du conteneur
-// Add sorted medias to container : Ajouter les médias triés dans le conteneur
-// Return an object with a method : Renvoie un objet avec une méthode
-// Get the DOM of the toggle : Obtenir le DOM du toggle
-// Cette traduction et explication détaillée devraient vous aider à mieux comprendre chaque partie de votre code JavaScript pour la fonction createToggle.
-
